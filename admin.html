@@ -183,7 +183,7 @@ var ADMIN_PASSWORD='kelly2026';
 function sbGet(t){return fetch(API+'/'+t+'?select=*&order=created_at.desc',{headers:H}).then(function(r){return r.json()})}
 function sbPost(t,d){return fetch(API+'/'+t,{method:'POST',headers:H,body:JSON.stringify(d)}).then(function(r){return r.json()})}
 function sbPatch(t,id,d){return fetch(API+'/'+t+'?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(d)}).then(function(r){return r.json()})}
-function sbDel(t,id){return fetch(API+'/'+t+'?id=eq.'+id,{method:'DELETE',headers:H}).then(function(r){return r.json()})}
+function sbDel(t,id){return fetch(API+'/'+t+'?id=eq.'+id,{method:'DELETE',headers:H}).then(function(r){if(r.status===204)return{success:true};return r.json()})}
 function sbGetOne(t,id){return fetch(API+'/'+t+'?id=eq.'+id+'&select=*',{headers:H}).then(function(r){return r.json()}).then(function(d){return d[0]||null})}
 function handleLogin(){var pwd=document.getElementById('adminPassword').value;if(pwd===ADMIN_PASSWORD){sessionStorage.setItem('admin_auth','1');showAdmin()}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPassword').value='';document.getElementById('adminPassword').focus()}}
 function handleLogout(){sessionStorage.removeItem('admin_auth');document.getElementById('adminPage').classList.remove('active');document.getElementById('loginPage').style.display='flex';document.getElementById('adminPassword').value=''}
