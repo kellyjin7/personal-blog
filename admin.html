@@ -5,103 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理后台 | 金鑫个人博客</title>
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #2d3748; line-height: 1.6; min-height: 100vh; }
-        .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%); padding: 24px; }
-        .login-card { background: #fff; border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .login-card h1 { font-size: 1.5rem; text-align: center; margin-bottom: 8px; color: #1a202c; }
-        .login-card p { text-align: center; color: #a0aec0; font-size: 0.9rem; margin-bottom: 28px; }
-        .login-card .form-group { margin-bottom: 18px; }
-        .login-card label { display: block; font-size: 0.85rem; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
-        .login-card input { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-        .login-card input:focus { border-color: #3182ce; box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
-        .login-error { color: #e53e3e; font-size: 0.85rem; text-align: center; margin-bottom: 12px; display: none; }
-        .btn-login { width: 100%; padding: 12px; background: #3182ce; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn-login:hover { background: #2b6cb0; }
-        .admin-page { display: none; }
-        .admin-page.active { display: block; }
-        .admin-header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
-        .admin-header h1 { font-size: 1.15rem; color: #1a202c; }
-        .admin-header h1 span { color: #3182ce; }
-        .admin-header-actions { display: flex; gap: 12px; align-items: center; }
-        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
-        .btn-primary { background: #3182ce; color: #fff; }
-        .btn-primary:hover { background: #2b6cb0; }
-        .btn-danger { background: #fff; color: #e53e3e; border: 1px solid #e53e3e; }
-        .btn-danger:hover { background: #fff5f5; }
-        .btn-success { background: #38a169; color: #fff; }
-        .btn-success:hover { background: #2f855a; }
-        .btn-ghost { background: transparent; color: #718096; }
-        .btn-ghost:hover { background: #f7fafc; color: #2d3748; }
-        .btn-sm { padding: 6px 12px; font-size: 0.82rem; }
-        .admin-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
-        .tabs { display: flex; gap: 0; margin-bottom: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-        .tab { padding: 14px 28px; font-size: 0.92rem; font-weight: 600; color: #718096; cursor: pointer; border: none; background: none; transition: all 0.2s; border-bottom: 3px solid transparent; }
-        .tab:hover { color: #2d3748; background: #f7fafc; }
-        .tab.active { color: #3182ce; border-bottom-color: #3182ce; background: #ebf8ff; }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
-        .stat-card .stat-value { font-size: 2rem; font-weight: 700; color: #1a202c; }
-        .stat-card .stat-label { font-size: 0.85rem; color: #a0aec0; margin-top: 4px; }
-        .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
-        .table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e2e8f0; }
-        .table-header h2 { font-size: 1.05rem; color: #1a202c; }
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { text-align: left; padding: 12px 20px; font-size: 0.82rem; font-weight: 600; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.05em; background: #f7fafc; border-bottom: 1px solid #e2e8f0; }
-        .data-table td { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; vertical-align: middle; }
-        .data-table tr:last-child td { border-bottom: none; }
-        .data-table tr:hover td { background: #f7fafc; }
-        .data-table .thumb-cell { width: 120px; }
-        .data-table .thumb-cell img { width: 100px; height: 56px; object-fit: cover; border-radius: 6px; background: #edf2f7; }
-        .data-table .title-cell { max-width: 240px; }
-        .data-table .title-cell strong { display: block; color: #1a202c; margin-bottom: 2px; }
-        .data-table .title-cell small { color: #a0aec0; font-size: 0.8rem; }
-        .data-table .actions-cell { white-space: nowrap; }
-        .data-table .actions-cell .btn { margin-right: 6px; }
-        .category-badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 500; background: #ebf8ff; color: #2b6cb0; }
-        .reply-badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 500; background: #f0fff4; color: #276749; }
-        .empty-state { text-align: center; padding: 60px 20px; color: #a0aec0; }
-        .empty-state-icon { font-size: 3rem; margin-bottom: 12px; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 24px; }
-        .modal-overlay.active { display: flex; }
-        .modal { background: #fff; border-radius: 16px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #e2e8f0; }
-        .modal-header h2 { font-size: 1.15rem; color: #1a202c; }
-        .modal-close { background: none; border: none; font-size: 1.5rem; color: #a0aec0; cursor: pointer; padding: 4px; line-height: 1; }
-        .modal-close:hover { color: #2d3748; }
-        .modal-body { padding: 24px; }
-        .modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #e2e8f0; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.92rem; font-family: inherit; outline: none; transition: border-color 0.2s; background: #fff; color: #2d3748; }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #3182ce; box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
-        .form-group textarea { resize: vertical; min-height: 80px; }
-        .form-group .hint { font-size: 0.78rem; color: #a0aec0; margin-top: 4px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .toast-container { position: fixed; top: 80px; right: 24px; z-index: 2000; }
-        .toast { padding: 12px 20px; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; font-weight: 500; color: #fff; animation: slideIn 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-        .toast.success { background: #38a169; }
-        .toast.error { background: #e53e3e; }
-        .toast.info { background: #3182ce; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .confirm-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1500; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 24px; }
-        .confirm-overlay.active { display: flex; }
-        .confirm-dialog { background: #fff; border-radius: 14px; padding: 28px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .confirm-dialog h3 { font-size: 1.1rem; color: #1a202c; margin-bottom: 8px; }
-        .confirm-dialog p { font-size: 0.9rem; color: #718096; margin-bottom: 24px; }
-        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
-        @media (max-width: 768px) {
-            .data-table th, .data-table td { padding: 10px 12px; }
-            .data-table .thumb-cell { width: 80px; }
-            .data-table .thumb-cell img { width: 70px; height: 40px; }
-            .form-row { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .admin-content { padding: 16px; }
-            .data-table .hide-mobile { display: none; }
-            .tab { padding: 12px 16px; font-size: 0.85rem; }
-        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#2d3748;line-height:1.6;min-height:100vh}
+        .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a365d 0%,#2c5282 100%);padding:24px}
+        .login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+        .login-card h1{font-size:1.5rem;text-align:center;margin-bottom:8px;color:#1a202c}
+        .login-card p{text-align:center;color:#a0aec0;font-size:.9rem;margin-bottom:28px}
+        .login-card .form-group{margin-bottom:18px}
+        .login-card label{display:block;font-size:.85rem;font-weight:600;color:#4a5568;margin-bottom:6px}
+        .login-card input{width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:.95rem;outline:none;transition:border-color .2s}
+        .login-card input:focus{border-color:#3182ce;box-shadow:0 0 0 3px rgba(49,130,206,.1)}
+        .login-error{color:#e53e3e;font-size:.85rem;text-align:center;margin-bottom:12px;display:none}
+        .btn-login{width:100%;padding:12px;background:#3182ce;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .2s}
+        .btn-login:hover{background:#2b6cb0}
+        .admin-page{display:none}
+        .admin-page.active{display:block}
+        .admin-header{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+        .admin-header h1{font-size:1.15rem;color:#1a202c}
+        .admin-header h1 span{color:#3182ce}
+        .admin-header-actions{display:flex;gap:12px;align-items:center}
+        .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+        .btn-primary{background:#3182ce;color:#fff}
+        .btn-primary:hover{background:#2b6cb0}
+        .btn-danger{background:#fff;color:#e53e3e;border:1px solid #e53e3e}
+        .btn-danger:hover{background:#fff5f5}
+        .btn-success{background:#38a169;color:#fff}
+        .btn-success:hover{background:#2f855a}
+        .btn-ghost{background:transparent;color:#718096}
+        .btn-ghost:hover{background:#f7fafc;color:#2d3748}
+        .btn-sm{padding:6px 12px;font-size:.82rem}
+        .admin-content{max-width:1200px;margin:0 auto;padding:24px}
+        .tabs{display:flex;gap:0;margin-bottom:24px;background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden}
+        .tab{padding:14px 28px;font-size:.92rem;font-weight:600;color:#718096;cursor:pointer;border:none;background:none;transition:all .2s;border-bottom:3px solid transparent}
+        .tab:hover{color:#2d3748;background:#f7fafc}
+        .tab.active{color:#3182ce;border-bottom-color:#3182ce;background:#ebf8ff}
+        .tab-panel{display:none}
+        .tab-panel.active{display:block}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+        .stat-card{background:#fff;border-radius:12px;padding:20px;border:1px solid #e2e8f0}
+        .stat-card .stat-value{font-size:2rem;font-weight:700;color:#1a202c}
+        .stat-card .stat-label{font-size:.85rem;color:#a0aec0;margin-top:4px}
+        .table-wrap{background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden}
+        .table-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e2e8f0}
+        .table-header h2{font-size:1.05rem;color:#1a202c}
+        .data-table{width:100%;border-collapse:collapse}
+        .data-table th{text-align:left;padding:12px 20px;font-size:.82rem;font-weight:600;color:#a0aec0;text-transform:uppercase;letter-spacing:.05em;background:#f7fafc;border-bottom:1px solid #e2e8f0}
+        .data-table td{padding:14px 20px;border-bottom:1px solid #f0f0f0;font-size:.9rem;vertical-align:middle}
+        .data-table tr:last-child td{border-bottom:none}
+        .data-table tr:hover td{background:#f7fafc}
+        .data-table .thumb-cell{width:120px}
+        .data-table .thumb-cell img{width:100px;height:56px;object-fit:cover;border-radius:6px;background:#edf2f7}
+        .data-table .title-cell{max-width:240px}
+        .data-table .title-cell strong{display:block;color:#1a202c;margin-bottom:2px}
+        .data-table .title-cell small{color:#a0aec0;font-size:.8rem}
+        .data-table .actions-cell{white-space:nowrap}
+        .data-table .actions-cell .btn{margin-right:6px}
+        .category-badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:.78rem;font-weight:500;background:#ebf8ff;color:#2b6cb0}
+        .reply-badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:.78rem;font-weight:500;background:#f0fff4;color:#276749}
+        .empty-state{text-align:center;padding:60px 20px;color:#a0aec0}
+        .empty-state-icon{font-size:3rem;margin-bottom:12px}
+        .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:24px}
+        .modal-overlay.active{display:flex}
+        .modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+        .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #e2e8f0}
+        .modal-header h2{font-size:1.15rem;color:#1a202c}
+        .modal-close{background:none;border:none;font-size:1.5rem;color:#a0aec0;cursor:pointer;padding:4px;line-height:1}
+        .modal-close:hover{color:#2d3748}
+        .modal-body{padding:24px}
+        .modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:16px 24px;border-top:1px solid #e2e8f0}
+        .form-group{margin-bottom:18px}
+        .form-group label{display:block;font-size:.85rem;font-weight:600;color:#4a5568;margin-bottom:6px}
+        .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:.92rem;font-family:inherit;outline:none;transition:border-color .2s;background:#fff;color:#2d3748}
+        .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#3182ce;box-shadow:0 0 0 3px rgba(49,130,206,.1)}
+        .form-group textarea{resize:vertical;min-height:80px}
+        .form-group .hint{font-size:.78rem;color:#a0aec0;margin-top:4px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .toast-container{position:fixed;top:80px;right:24px;z-index:2000}
+        .toast{padding:12px 20px;border-radius:8px;margin-bottom:8px;font-size:.9rem;font-weight:500;color:#fff;animation:slideIn .3s ease;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+        .toast.success{background:#38a169}
+        .toast.error{background:#e53e3e}
+        .toast.info{background:#3182ce}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        .confirm-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:1500;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:24px}
+        .confirm-overlay.active{display:flex}
+        .confirm-dialog{background:#fff;border-radius:14px;padding:28px;width:100%;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+        .confirm-dialog h3{font-size:1.1rem;color:#1a202c;margin-bottom:8px}
+        .confirm-dialog p{font-size:.9rem;color:#718096;margin-bottom:24px}
+        .confirm-actions{display:flex;gap:12px;justify-content:center}
+        @media(max-width:768px){.data-table th,.data-table td{padding:10px 12px}.data-table .thumb-cell{width:80px}.data-table .thumb-cell img{width:70px;height:40px}.form-row{grid-template-columns:1fr}.stats-grid{grid-template-columns:1fr 1fr}.admin-content{padding:16px}.data-table .hide-mobile{display:none}.tab{padding:12px 16px;font-size:.85rem}}
     </style>
 </head>
 <body>
@@ -110,10 +101,7 @@
         <h1>&#128274; 管理后台</h1>
         <p>金鑫个人博客 &middot; 内容管理</p>
         <div class="login-error" id="loginError">密码错误，请重试</div>
-        <div class="form-group">
-            <label for="adminPassword">管理密码</label>
-            <input type="password" id="adminPassword" placeholder="请输入管理密码" autofocus>
-        </div>
+        <div class="form-group"><label for="adminPassword">管理密码</label><input type="password" id="adminPassword" placeholder="请输入管理密码" autofocus></div>
         <button class="btn-login" onclick="handleLogin()">登 录</button>
     </div>
 </div>
@@ -132,8 +120,8 @@
             <div class="stat-card"><div class="stat-value" id="statUnreplied">-</div><div class="stat-label">待回复留言</div></div>
         </div>
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('videos', this)">&#127909; 视频管理</button>
-            <button class="tab" onclick="switchTab('messages', this)">&#128172; 留言管理</button>
+            <button class="tab active" onclick="switchTab('videos',this)">&#127909; 视频管理</button>
+            <button class="tab" onclick="switchTab('messages',this)">&#128172; 留言管理</button>
         </div>
         <div class="tab-panel active" id="panel-videos">
             <div class="table-wrap">
@@ -171,7 +159,7 @@
         <div class="modal-header"><h2>回复留言</h2><button class="modal-close" onclick="closeReplyModal()">&times;</button></div>
         <div class="modal-body">
             <input type="hidden" id="replyMsgId">
-            <div class="form-group"><label>留言内容</label><div id="replyOriginal" style="padding:12px;background:#f7fafc;border-radius:8px;color:#4a5568;font-size:0.9rem;white-space:pre-wrap"></div></div>
+            <div class="form-group"><label>留言内容</label><div id="replyOriginal" style="padding:12px;background:#f7fafc;border-radius:8px;color:#4a5568;font-size:.9rem;white-space:pre-wrap"></div></div>
             <div class="form-group"><label>回复内容 *</label><textarea id="replyContent" placeholder="写下你的回复..." style="min-height:100px"></textarea></div>
         </div>
         <div class="modal-footer"><button class="btn btn-ghost" onclick="closeReplyModal()">取消</button><button class="btn btn-success" onclick="submitReply()">提交回复</button></div>
@@ -188,166 +176,37 @@
     </div>
 </div>
 <div class="toast-container" id="toastContainer"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var SUPABASE_URL = 'https://quclkzudnrpexvghvost.supabase.co';
-var SUPABASE_ANON_KEY = 'sb_publishable__02J7BerUfZNv0F-xdRRPA_eedXIUka';
-var ADMIN_PASSWORD = 'kelly2026';
-var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-function handleLogin() {
-    var pwd = document.getElementById('adminPassword').value;
-    if (pwd === ADMIN_PASSWORD) {
-        sessionStorage.setItem('admin_auth', '1');
-        showAdmin();
-    } else {
-        document.getElementById('loginError').style.display = 'block';
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('adminPassword').focus();
-    }
-}
-function handleLogout() {
-    sessionStorage.removeItem('admin_auth');
-    document.getElementById('adminPage').classList.remove('active');
-    document.getElementById('loginPage').style.display = 'flex';
-    document.getElementById('adminPassword').value = '';
-}
-function showAdmin() {
-    document.getElementById('loginPage').style.display = 'none';
-    document.getElementById('adminPage').classList.add('active');
-    loadAll();
-}
-document.getElementById('adminPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') handleLogin(); });
-if (sessionStorage.getItem('admin_auth') === '1') showAdmin();
-function showToast(msg, type) {
-    var t = document.createElement('div');
-    t.className = 'toast ' + (type || 'info');
-    t.textContent = msg;
-    document.getElementById('toastContainer').appendChild(t);
-    setTimeout(function() { t.style.opacity = '0'; setTimeout(function() { t.remove(); }, 300); }, 3000);
-}
-function switchTab(tab, el) {
-    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-    el.classList.add('active');
-    document.getElementById('panel-' + tab).classList.add('active');
-}
-function loadAll() { loadVideos(); loadMessages(); }
-async function loadVideos() {
-    var tbody = document.getElementById('videoTableBody');
-    try {
-        var result = await sb.from('videos').select('*').order('created_at', { ascending: false });
-        if (result.error) throw result.error;
-        document.getElementById('statVideos').textContent = result.data.length;
-        if (result.data.length === 0) {
-            tbody.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#127916;</div><p>暂无视频，点击上方按钮添加</p></div>';
-            return;
-        }
-        var html = '<table class="data-table"><thead><tr><th>封面</th><th>标题</th><th class="hide-mobile">分类</th><th class="hide-mobile">日期</th><th>操作</th></tr></thead><tbody>';
-        result.data.forEach(function(v) {
-            var date = v.created_at ? new Date(v.created_at).toLocaleDateString('zh-CN') : '-';
-            html += '<tr><td class="thumb-cell">' + (v.cover ? '<img src="' + v.cover + '" alt="">' : '<div style="width:100px;height:56px;background:#edf2f7;border-radius:6px"></div>') + '</td><td class="title-cell"><strong>' + v.title + '</strong><small>' + v.id.slice(0,8) + '</small></td><td class="hide-mobile">' + (v.category ? '<span class="category-badge">' + v.category + '</span>' : '-') + '</td><td class="hide-mobile">' + date + '</td><td class="actions-cell"><button class="btn btn-ghost btn-sm" onclick="editVideo(\'' + v.id + '\')">&#9998; 编辑</button><button class="btn btn-danger btn-sm" onclick="deleteVideo(\'' + v.id + '\',\'' + v.title.replace(/'/g, "\\'") + '\')">&#128465; 删除</button></td></tr>';
-        });
-        html += '</tbody></table>';
-        tbody.innerHTML = html;
-    } catch (err) {
-        tbody.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;&#65039;</div><p>加载失败</p></div>';
-    }
-}
-function openVideoModal() {
-    document.getElementById('videoModalTitle').textContent = '添加视频';
-    document.getElementById('editVideoId').value = '';
-    ['videoTitle','videoUrl','videoDesc','videoDuration','videoCover'].forEach(function(id) { document.getElementById(id).value = ''; });
-    document.getElementById('videoCategory').value = '';
-    document.getElementById('videoModal').classList.add('active');
-}
-async function editVideo(id) {
-    var result = await sb.from('videos').select('*').eq('id', id).single();
-    var v = result.data;
-    if (!v) return;
-    document.getElementById('videoModalTitle').textContent = '编辑视频';
-    document.getElementById('editVideoId').value = id;
-    document.getElementById('videoTitle').value = v.title || '';
-    document.getElementById('videoUrl').value = v.url || '';
-    document.getElementById('videoDesc').value = v.description || '';
-    document.getElementById('videoCategory').value = v.category || '';
-    document.getElementById('videoDuration').value = v.duration || '';
-    document.getElementById('videoCover').value = v.cover || '';
-    document.getElementById('videoModal').classList.add('active');
-}
-function closeVideoModal() { document.getElementById('videoModal').classList.remove('active'); }
-async function saveVideo() {
-    var id = document.getElementById('editVideoId').value;
-    var title = document.getElementById('videoTitle').value.trim();
-    var url = document.getElementById('videoUrl').value.trim();
-    if (!title || !url) { showToast('请填写标题和地址', 'error'); return; }
-    var row = { title: title, url: url, description: document.getElementById('videoDesc').value.trim(), category: document.getElementById('videoCategory').value, duration: document.getElementById('videoDuration').value.trim(), cover: document.getElementById('videoCover').value.trim() };
-    try {
-        var result;
-        if (id) { result = await sb.from('videos').update(row).eq('id', id); }
-        else { result = await sb.from('videos').insert(row); }
-        if (result.error) throw result.error;
-        closeVideoModal();
-        showToast(id ? '视频已更新' : '视频已添加', 'success');
-        loadVideos();
-    } catch (err) { showToast('保存失败: ' + err.message, 'error'); }
-}
-var deleteCallback = null;
-function deleteVideo(id, title) {
-    document.getElementById('confirmText').textContent = '确定要删除「' + title + '」吗？';
-    deleteCallback = async function() {
-        var result = await sb.from('videos').delete().eq('id', id);
-        if (result.error) { showToast('删除失败', 'error'); } else { showToast('已删除', 'success'); loadVideos(); }
-    };
-    document.getElementById('confirmDialog').classList.add('active');
-    document.getElementById('confirmBtn').onclick = function() { closeConfirm(); if (deleteCallback) deleteCallback(); };
-}
-async function loadMessages() {
-    var tbody = document.getElementById('messageTableBody');
-    try {
-        var result = await sb.from('guestbook').select('*').order('created_at', { ascending: false });
-        if (result.error) throw result.error;
-        document.getElementById('statMessages').textContent = result.data.length;
-        document.getElementById('statUnreplied').textContent = result.data.filter(function(m) { return !m.reply; }).length;
-        if (result.data.length === 0) {
-            tbody.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#128172;</div><p>暂无留言</p></div>';
-            return;
-        }
-        var html = '<table class="data-table"><thead><tr><th>昵称</th><th>留言内容</th><th class="hide-mobile">邮箱</th><th>状态</th><th>操作</th></tr></thead><tbody>';
-        result.data.forEach(function(m) {
-            var date = m.created_at ? new Date(m.created_at).toLocaleDateString('zh-CN') : '-';
-            var safeContent = (m.content || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/\n/g,' ');
-            html += '<tr><td><strong>' + (m.nick || '匿名') + '</strong><br><small style="color:#a0aec0">' + date + '</small></td><td style="max-width:300px;white-space:pre-wrap;word-break:break-word">' + safeContent + '</td><td class="hide-mobile" style="color:#a0aec0;font-size:0.85rem">' + (m.email || '-') + '</td><td>' + (m.reply ? '<span class="reply-badge">已回复</span>' : '<span style="color:#ed8936;font-size:0.85rem">待回复</span>') + '</td><td class="actions-cell"><button class="btn btn-success btn-sm" onclick="openReply(\'' + m.id + '\',this)" data-content="' + safeContent + '">&#128172; 回复</button><button class="btn btn-danger btn-sm" onclick="deleteMessage(\'' + m.id + '\')">&#128465;</button></td></tr>';
-        });
-        html += '</tbody></table>';
-        tbody.innerHTML = html;
-    } catch (err) {
-        tbody.innerHTML = '<div class="empty-state"><div class="empty-state-icon">&#9888;&#65039;</div><p>加载失败</p></div>';
-    }
-}
-function openReply(id, el) {
-    document.getElementById('replyMsgId').value = id;
-    document.getElementById('replyOriginal').textContent = el.getAttribute('data-content');
-    document.getElementById('replyContent').value = '';
-    document.getElementById('replyModal').classList.add('active');
-}
-function closeReplyModal() { document.getElementById('replyModal').classList.remove('active'); }
-async function submitReply() {
-    var id = document.getElementById('replyMsgId').value;
-    var reply = document.getElementById('replyContent').value.trim();
-    if (!reply) { showToast('请填写回复内容', 'error'); return; }
-    var result = await sb.from('guestbook').update({ reply: reply }).eq('id', id);
-    if (result.error) { showToast('回复失败: ' + result.error.message, 'error'); } else { showToast('回复成功', 'success'); closeReplyModal(); loadMessages(); }
-}
-function deleteMessage(id) {
-    document.getElementById('confirmText').textContent = '确定要删除这条留言吗？';
-    deleteCallback = async function() {
-        var result = await sb.from('guestbook').delete().eq('id', id);
-        if (result.error) { showToast('删除失败', 'error'); } else { showToast('已删除', 'success'); loadMessages(); }
-    };
-    document.getElementById('confirmDialog').classList.add('active');
-    document.getElementById('confirmBtn').onclick = function() { closeConfirm(); if (deleteCallback) deleteCallback(); };
-}
-function closeConfirm() { document.getElementById('confirmDialog').classList.remove('active'); deleteCallback = null; }
+var API='https://quclkzudnrpexvghvost.supabase.co/rest/v1',KEY='sb_publishable__02J7BerUfZNv0F-xdRRPA_eedXIUka';
+var H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+var ADMIN_PASSWORD='kelly2026';
+function sbGet(t){return fetch(API+'/'+t+'?select=*&order=created_at.desc',{headers:H}).then(function(r){return r.json()})}
+function sbPost(t,d){return fetch(API+'/'+t,{method:'POST',headers:H,body:JSON.stringify(d)}).then(function(r){return r.json()})}
+function sbPatch(t,id,d){return fetch(API+'/'+t+'?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(d)}).then(function(r){return r.json()})}
+function sbDel(t,id){return fetch(API+'/'+t+'?id=eq.'+id,{method:'DELETE',headers:H}).then(function(r){return r.json()})}
+function sbGetOne(t,id){return fetch(API+'/'+t+'?id=eq.'+id+'&select=*',{headers:H}).then(function(r){return r.json()}).then(function(d){return d[0]||null})}
+function handleLogin(){var pwd=document.getElementById('adminPassword').value;if(pwd===ADMIN_PASSWORD){sessionStorage.setItem('admin_auth','1');showAdmin()}else{document.getElementById('loginError').style.display='block';document.getElementById('adminPassword').value='';document.getElementById('adminPassword').focus()}}
+function handleLogout(){sessionStorage.removeItem('admin_auth');document.getElementById('adminPage').classList.remove('active');document.getElementById('loginPage').style.display='flex';document.getElementById('adminPassword').value=''}
+function showAdmin(){document.getElementById('loginPage').style.display='none';document.getElementById('adminPage').classList.add('active');loadAll()}
+document.getElementById('adminPassword').addEventListener('keydown',function(e){if(e.key==='Enter')handleLogin()});
+if(sessionStorage.getItem('admin_auth')==='1')showAdmin();
+function showToast(msg,type){var t=document.createElement('div');t.className='toast '+(type||'info');t.textContent=msg;document.getElementById('toastContainer').appendChild(t);setTimeout(function(){t.style.opacity='0';setTimeout(function(){t.remove()},300)},3000)}
+function switchTab(tab,el){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});el.classList.add('active');document.getElementById('panel-'+tab).classList.add('active')}
+function loadAll(){loadVideos();loadMessages()}
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+async function loadVideos(){var tbody=document.getElementById('videoTableBody');try{var r=await sbGet('videos');if(r.error)throw r;document.getElementById('statVideos').textContent=r.length;if(!r.length){tbody.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#127916;</div><p>暂无视频，点击上方按钮添加</p></div>';return}var h='<table class="data-table"><thead><tr><th>封面</th><th>标题</th><th class="hide-mobile">分类</th><th class="hide-mobile">日期</th><th>操作</th></tr></thead><tbody>';r.forEach(function(v){var ds=v.created_at?new Date(v.created_at).toLocaleDateString('zh-CN'):'-';h+='<tr><td class="thumb-cell">'+(v.cover?'<img src="'+v.cover+'" alt="">':'<div style="width:100px;height:56px;background:#edf2f7;border-radius:6px"></div>')+'</td><td class="title-cell"><strong>'+esc(v.title)+'</strong><small>'+v.id.slice(0,8)+'</small></td><td class="hide-mobile">'+(v.category?'<span class="category-badge">'+v.category+'</span>':'-')+'</td><td class="hide-mobile">'+ds+'</td><td class="actions-cell"><button class="btn btn-ghost btn-sm" onclick="editVideo(\''+v.id+'\')">&#9998; 编辑</button><button class="btn btn-danger btn-sm" onclick="deleteVideo(\''+v.id+'\',\''+esc(v.title).replace(/'/g,"\\'")+'\')">&#128465; 删除</button></td></tr>'});h+='</tbody></table>';tbody.innerHTML=h}catch(e){tbody.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#9888;&#65039;</div><p>加载失败</p></div>'}}
+function openVideoModal(){document.getElementById('videoModalTitle').textContent='添加视频';document.getElementById('editVideoId').value='';['videoTitle','videoUrl','videoDesc','videoDuration','videoCover'].forEach(function(id){document.getElementById(id).value=''});document.getElementById('videoCategory').value='';document.getElementById('videoModal').classList.add('active')}
+async function editVideo(id){var v=await sbGetOne('videos',id);if(!v)return;document.getElementById('videoModalTitle').textContent='编辑视频';document.getElementById('editVideoId').value=id;document.getElementById('videoTitle').value=v.title||'';document.getElementById('videoUrl').value=v.url||'';document.getElementById('videoDesc').value=v.description||'';document.getElementById('videoCategory').value=v.category||'';document.getElementById('videoDuration').value=v.duration||'';document.getElementById('videoCover').value=v.cover||'';document.getElementById('videoModal').classList.add('active')}
+function closeVideoModal(){document.getElementById('videoModal').classList.remove('active')}
+async function saveVideo(){var id=document.getElementById('editVideoId').value,title=document.getElementById('videoTitle').value.trim(),url=document.getElementById('videoUrl').value.trim();if(!title||!url){showToast('请填写标题和地址','error');return}var row={title:title,url:url,description:document.getElementById('videoDesc').value.trim(),category:document.getElementById('videoCategory').value,duration:document.getElementById('videoDuration').value.trim(),cover:document.getElementById('videoCover').value.trim()};try{var r;if(id){r=await sbPatch('videos',id,row)}else{r=await sbPost('videos',row)}if(r.error)throw r;closeVideoModal();showToast(id?'视频已更新':'视频已添加','success');loadVideos()}catch(e){showToast('保存失败','error')}}
+var deleteCallback=null;
+function deleteVideo(id,title){document.getElementById('confirmText').textContent='确定要删除「'+title+'」吗？';deleteCallback=async function(){var r=await sbDel('videos',id);if(r.error){showToast('删除失败','error')}else{showToast('已删除','success');loadVideos()}};document.getElementById('confirmDialog').classList.add('active');document.getElementById('confirmBtn').onclick=function(){closeConfirm();if(deleteCallback)deleteCallback()}}
+async function loadMessages(){var tbody=document.getElementById('messageTableBody');try{var r=await sbGet('guestbook');if(r.error)throw r;document.getElementById('statMessages').textContent=r.length;document.getElementById('statUnreplied').textContent=r.filter(function(m){return!m.reply}).length;if(!r.length){tbody.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#128172;</div><p>暂无留言</p></div>';return}var h='<table class="data-table"><thead><tr><th>昵称</th><th>留言内容</th><th class="hide-mobile">邮箱</th><th>状态</th><th>操作</th></tr></thead><tbody>';r.forEach(function(m){var ds=m.created_at?new Date(m.created_at).toLocaleDateString('zh-CN'):'-';var sc=esc(m.content||'').replace(/\n/g,' ');h+='<tr><td><strong>'+esc(m.nick||'匿名')+'</strong><br><small style="color:#a0aec0">'+ds+'</small></td><td style="max-width:300px;white-space:pre-wrap;word-break:break-word">'+sc+'</td><td class="hide-mobile" style="color:#a0aec0;font-size:.85rem">'+(m.email||'-')+'</td><td>'+(m.reply?'<span class="reply-badge">已回复</span>':'<span style="color:#ed8936;font-size:.85rem">待回复</span>')+'</td><td class="actions-cell"><button class="btn btn-success btn-sm" onclick="openReply(\''+m.id+'\',this)" data-content="'+sc.replace(/"/g,'&quot;')+'">&#128172; 回复</button><button class="btn btn-danger btn-sm" onclick="deleteMessage(\''+m.id+'\')">&#128465;</button></td></tr>'});h+='</tbody></table>';tbody.innerHTML=h}catch(e){tbody.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#9888;&#65039;</div><p>加载失败</p></div>'}}
+function openReply(id,el){document.getElementById('replyMsgId').value=id;document.getElementById('replyOriginal').textContent=el.getAttribute('data-content');document.getElementById('replyContent').value='';document.getElementById('replyModal').classList.add('active')}
+function closeReplyModal(){document.getElementById('replyModal').classList.remove('active')}
+async function submitReply(){var id=document.getElementById('replyMsgId').value,reply=document.getElementById('replyContent').value.trim();if(!reply){showToast('请填写回复内容','error');return}var r=await sbPatch('guestbook',id,{reply:reply});if(r.error){showToast('回复失败','error')}else{showToast('回复成功','success');closeReplyModal();loadMessages()}}
+function deleteMessage(id){document.getElementById('confirmText').textContent='确定要删除这条留言吗？';deleteCallback=async function(){var r=await sbDel('guestbook',id);if(r.error){showToast('删除失败','error')}else{showToast('已删除','success');loadMessages()}};document.getElementById('confirmDialog').classList.add('active');document.getElementById('confirmBtn').onclick=function(){closeConfirm();if(deleteCallback)deleteCallback()}}
+function closeConfirm(){document.getElementById('confirmDialog').classList.remove('active');deleteCallback=null}
 </script>
 </body>
 </html>
