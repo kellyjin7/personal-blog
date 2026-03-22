@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金鑫 | 技术赋能者的多维成长之路</title>
+    <meta name="description" content="金鑫 - 兼具技术功底与新媒体运营经验的复合型人才，软件工程本科，全栈开发技能，官方新媒体运营经验。">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #2d3748; line-height: 1.7; background: #fafbfc; overflow-x: hidden;
+        }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.3s;
+        }
+        nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; height: 64px;
+        }
+        .nav-logo { font-size: 1.15rem; font-weight: 700; color: #1a202c; letter-spacing: -0.02em; }
+        .nav-logo span { color: #3182ce; }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { font-size: 0.88rem; color: #4a5568; font-weight: 500; transition: color 0.2s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #3182ce; transition: width 0.3s; }
+        .nav-links a:hover { color: #2b6cb0; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+        .nav-toggle span { display: block; width: 22px; height: 2px; background: #2d3748; margin: 5px 0; transition: 0.3s; border-radius: 2px; }
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; padding: 100px 24px 60px;
+            background: linear-gradient(135deg, #1a365d 0%, #2a4365 40%, #2c5282 100%);
+            position: relative; overflow: hidden;
+        }
+        .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(66,153,225,0.15) 0%, transparent 70%); }
+        .hero::after { content: ''; position: absolute; bottom: -30%; left: -10%; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(49,130,206,0.1) 0%, transparent 70%); }
+        .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+        .hero-text { color: #fff; }
+        .hero-badge { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.85rem; color: #bee3f8; margin-bottom: 20px; }
+        .hero-name { font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 8px; }
+        .hero-subtitle { font-size: 1.35rem; color: #90cdf4; margin-bottom: 24px; }
+        .hero-desc { font-size: 1rem; color: #cbd5e0; line-height: 1.8; max-width: 480px; margin-bottom: 32px; }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; transition: all 0.3s; cursor: pointer; border: none; }
+        .btn-primary { background: #fff; color: #2a4365; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .btn-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
+        .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+        .hero-visual { display: flex; justify-content: center; align-items: center; }
+        .hero-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 40px; width: 100%; max-width: 380px; }
+        .hero-card-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #63b3ed, #4299e1); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; font-weight: 700; box-shadow: 0 8px 24px rgba(66,153,225,0.3); }
+        .hero-card h3 { text-align: center; color: #fff; font-size: 1.3rem; margin-bottom: 4px; }
+        .hero-card p { text-align: center; color: #90cdf4; font-size: 0.9rem; margin-bottom: 24px; }
+        .hero-card-info { display: flex; flex-direction: column; gap: 12px; }
+        .hero-card-item { display: flex; align-items: center; gap: 12px; color: #e2e8f0; font-size: 0.88rem; }
+        .hero-card-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        section { padding: 80px 24px; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 56px; }
+        .section-tag { display: inline-block; padding: 4px 14px; background: #ebf8ff; color: #2b6cb0; border-radius: 4px; font-size: 0.82rem; font-weight: 600; margin-bottom: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .section-title { font-size: 2rem; font-weight: 700; color: #1a202c; margin-bottom: 12px; }
+        .section-desc { font-size: 1.05rem; color: #718096; max-width: 560px; margin: 0 auto; }
+        .about { background: #fff; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .about-text h3 { font-size: 1.3rem; color: #1a202c; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #ebf8ff; }
+        .about-text p { color: #4a5568; margin-bottom: 16px; font-size: 0.98rem; }
+        .about-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .highlight-card { padding: 20px; border-radius: 12px; background: #f7fafc; border: 1px solid #e2e8f0; transition: all 0.3s; }
+        .highlight-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); border-color: #bee3f8; }
+        .highlight-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
+        .highlight-card:nth-child(1) .highlight-icon { background: #ebf8ff; }
+        .highlight-card:nth-child(2) .highlight-icon { background: #f0fff4; }
+        .highlight-card:nth-child(3) .highlight-icon { background: #fffaf0; }
+        .highlight-card:nth-child(4) .highlight-icon { background: #faf5ff; }
+        .highlight-card h4 { font-size: 0.95rem; color: #1a202c; margin-bottom: 6px; }
+        .highlight-card p { font-size: 0.85rem; color: #718096; line-height: 1.6; }
+        .skills { background: #f7fafc; }
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .skill-card { background: #fff; border-radius: 14px; padding: 28px; border: 1px solid #e2e8f0; transition: all 0.3s; }
+        .skill-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+        .skill-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+        .skill-card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .skill-card:nth-child(1) .skill-card-icon { background: #ebf8ff; }
+        .skill-card:nth-child(2) .skill-card-icon { background: #f0fff4; }
+        .skill-card:nth-child(3) .skill-card-icon { background: #fffaf0; }
+        .skill-card:nth-child(4) .skill-card-icon { background: #faf5ff; }
+        .skill-card:nth-child(5) .skill-card-icon { background: #fff5f5; }
+        .skill-card:nth-child(6) .skill-card-icon { background: #fffff0; }
+        .skill-card h3 { font-size: 1.05rem; color: #1a202c; }
+        .skill-card p { font-size: 0.88rem; color: #718096; margin-bottom: 16px; line-height: 1.6; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 500; background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; }
+        .experience { background: #fff; }
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #3182ce, #63b3ed, #bee3f8); }
+        .timeline-item { position: relative; padding-left: 64px; margin-bottom: 40px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: 16px; top: 6px; width: 18px; height: 18px; border-radius: 50%; background: #3182ce; border: 3px solid #ebf8ff; box-shadow: 0 0 0 3px #3182ce; }
+        .timeline-date { font-size: 0.82rem; color: #3182ce; font-weight: 600; margin-bottom: 6px; }
+        .timeline-item h3 { font-size: 1.1rem; color: #1a202c; margin-bottom: 4px; }
+        .timeline-item h4 { font-size: 0.92rem; color: #4a5568; font-weight: 500; margin-bottom: 10px; }
+        .timeline-item p { font-size: 0.9rem; color: #718096; line-height: 1.7; }
+        .education { background: #f7fafc; }
+        .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 800px; margin: 0 auto; }
+        .edu-card { background: #fff; border-radius: 14px; padding: 28px; border: 1px solid #e2e8f0; }
+        .edu-card h3 { font-size: 1.05rem; color: #1a202c; margin-bottom: 6px; }
+        .edu-card .edu-school { font-size: 0.92rem; color: #3182ce; font-weight: 500; margin-bottom: 4px; }
+        .edu-card .edu-date { font-size: 0.85rem; color: #a0aec0; margin-bottom: 12px; }
+        .edu-card p { font-size: 0.88rem; color: #718096; line-height: 1.6; }
+        .edu-honors { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .edu-honor { padding: 3px 10px; border-radius: 4px; font-size: 0.78rem; background: #ebf8ff; color: #2b6cb0; font-weight: 500; }
+        .values { background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%); color: #fff; }
+        .values .section-tag { background: rgba(255,255,255,0.12); color: #bee3f8; }
+        .values .section-title { color: #fff; }
+        .values .section-desc { color: #90cdf4; }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .value-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 28px; transition: all 0.3s; }
+        .value-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-3px); }
+        .value-card-icon { font-size: 2rem; margin-bottom: 16px; }
+        .value-card h3 { font-size: 1.05rem; margin-bottom: 10px; }
+        .value-card p { font-size: 0.88rem; color: #cbd5e0; line-height: 1.7; }
+        .videos { background: #f7fafc; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .video-card { background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; transition: all 0.3s; cursor: pointer; }
+        .video-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+        .video-thumb { position: relative; width: 100%; padding-top: 56.25%; background: #1a202c; overflow: hidden; }
+        .video-thumb img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+        .video-card:hover .video-thumb img { transform: scale(1.05); }
+        .video-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+        .video-play-btn::after { content: ''; display: block; width: 0; height: 0; border-style: solid; border-width: 10px 0 10px 18px; border-color: transparent transparent transparent #2d3748; margin-left: 3px; }
+        .video-card:hover .video-play-btn { background: #fff; transform: translate(-50%, -50%) scale(1.1); }
+        .video-duration { position: absolute; bottom: 8px; right: 8px; padding: 2px 8px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 4px; font-size: 0.75rem; font-weight: 500; }
+        .video-info { padding: 16px 20px; }
+        .video-info h3 { font-size: 1rem; color: #1a202c; margin-bottom: 6px; line-height: 1.4; }
+        .video-info p { font-size: 0.85rem; color: #718096; line-height: 1.5; margin-bottom: 8px; }
+        .video-meta { display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: #a0aec0; }
+        .video-category { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; background: #ebf8ff; color: #2b6cb0; font-weight: 500; }
+        .video-empty { text-align: center; padding: 60px 20px; color: #a0aec0; grid-column: 1 / -1; }
+        .video-empty-icon { font-size: 3rem; margin-bottom: 16px; }
+        .video-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 2000; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 24px; }
+        .video-modal.active { display: flex; }
+        .video-modal-inner { width: 100%; max-width: 900px; position: relative; }
+        .video-modal-close { position: absolute; top: -40px; right: 0; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .video-modal-close:hover { opacity: 0.7; }
+        .video-modal-player { width: 100%; padding-top: 56.25%; position: relative; background: #000; border-radius: 12px; overflow: hidden; }
+        .video-modal-player iframe, .video-modal-player video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .video-modal-title { color: #fff; font-size: 1.1rem; margin-top: 16px; font-weight: 600; }
+        .guestbook { background: #fff; }
+        .guestbook-container { max-width: 780px; margin: 0 auto; background: #f7fafc; border-radius: 16px; border: 1px solid #e2e8f0; padding: 32px; }
+        .guestbook-hint { text-align: center; color: #a0aec0; font-size: 0.88rem; margin-bottom: 24px; }
+        .gb-form { margin-bottom: 28px; }
+        .gb-form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .gb-form-row input { flex: 1; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.92rem; outline: none; transition: border-color 0.2s; background: #fff; }
+        .gb-form-row input:focus { border-color: #3182ce; box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
+        .gb-form textarea { width: 100%; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.92rem; outline: none; resize: vertical; min-height: 100px; font-family: inherit; transition: border-color 0.2s; background: #fff; }
+        .gb-form textarea:focus { border-color: #3182ce; box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
+        .gb-form-actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+        .gb-btn { padding: 10px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+        .gb-btn-primary { background: #3182ce; color: #fff; }
+        .gb-btn-primary:hover { background: #2b6cb0; }
+        .gb-btn-primary:disabled { background: #a0aec0; cursor: not-allowed; }
+        .gb-list { display: flex; flex-direction: column; gap: 16px; }
+        .gb-item { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
+        .gb-item-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .gb-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #63b3ed, #4299e1); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+        .gb-item-header .gb-name { font-weight: 600; color: #1a202c; font-size: 0.92rem; }
+        .gb-item-header .gb-time { font-size: 0.78rem; color: #a0aec0; margin-left: auto; }
+        .gb-item .gb-content { color: #4a5568; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+        .gb-reply { margin-top: 12px; padding: 12px 16px; background: #ebf8ff; border-radius: 8px; border-left: 3px solid #3182ce; }
+        .gb-reply-label { font-size: 0.78rem; color: #3182ce; font-weight: 600; margin-bottom: 4px; }
+        .gb-reply .gb-content { color: #2d3748; font-size: 0.88rem; }
+        .gb-empty { text-align: center; padding: 40px; color: #a0aec0; }
+        .gb-loading { text-align: center; padding: 40px; color: #a0aec0; }
+        .gb-loading::after { content: ''; display: inline-block; width: 24px; height: 24px; border: 2px solid #e2e8f0; border-top-color: #3182ce; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .contact { background: #f7fafc; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .contact-info h3 { font-size: 1.3rem; color: #1a202c; margin-bottom: 16px; }
+        .contact-info p { font-size: 0.95rem; color: #718096; margin-bottom: 24px; line-height: 1.7; }
+        .contact-list { display: flex; flex-direction: column; gap: 16px; }
+        .contact-item { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; transition: all 0.3s; }
+        .contact-item:hover { border-color: #bee3f8; background: #ebf8ff; }
+        .contact-item-icon { width: 40px; height: 40px; border-radius: 8px; background: #ebf8ff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .contact-item-text .label { font-size: 0.78rem; color: #a0aec0; margin-bottom: 2px; }
+        .contact-item-text .value { font-size: 0.92rem; color: #2d3748; font-weight: 500; }
+        footer { background: #1a202c; color: #a0aec0; text-align: center; padding: 32px 24px; font-size: 0.85rem; }
+        footer a { color: #63b3ed; }
+        footer a:hover { color: #90cdf4; }
+        .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .loading-spinner { display: flex; justify-content: center; padding: 40px; grid-column: 1 / -1; }
+        .loading-spinner::after { content: ''; width: 32px; height: 32px; border: 3px solid #e2e8f0; border-top-color: #3182ce; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(12px); padding: 16px 24px; gap: 0; border-bottom: 1px solid #e2e8f0; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+            .nav-links.open li { border-bottom: 1px solid #f0f0f0; }
+            .nav-links.open a { display: block; padding: 12px 0; }
+            .nav-toggle { display: block; }
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero-desc { margin: 0 auto 32px; }
+            .hero-actions { justify-content: center; }
+            .hero-visual { order: -1; }
+            .hero-card { max-width: 300px; }
+            .hero-name { font-size: 2.4rem; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .skills-grid, .values-grid { grid-template-columns: 1fr; }
+            .edu-grid { grid-template-columns: 1fr; }
+            .about-highlights { grid-template-columns: 1fr; }
+            .video-grid { grid-template-columns: 1fr; }
+            .gb-form-row { flex-direction: column; }
+            section { padding: 60px 20px; }
+            .guestbook-container { padding: 20px; }
+        }
+        @media (max-width: 480px) {
+            .hero-name { font-size: 2rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .section-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">Jin<span>Xin</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about" onclick="closeNav()">关于我</a></li>
+            <li><a href="#skills" onclick="closeNav()">技术能力</a></li>
+            <li><a href="#experience" onclick="closeNav()">工作经历</a></li>
+            <li><a href="#education" onclick="closeNav()">教育背景</a></li>
+            <li><a href="#values" onclick="closeNav()">价值主张</a></li>
+            <li><a href="#videos" onclick="closeNav()">视频作品</a></li>
+            <li><a href="#guestbook" onclick="closeNav()">留言板</a></li>
+            <li><a href="#contact" onclick="closeNav()">联系我</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+<section class="hero" id="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <div class="hero-badge">ENFP &middot; 技术赋能者</div>
+            <h1 class="hero-name">金鑫</h1>
+            <p class="hero-subtitle">技术底色与多元身份的融合者</p>
+            <p class="hero-desc">软件工程科班出身，兼具全栈开发技能与新媒体运营经验。在技术实现与用户体验之间搭建桥梁，善于运用技术工具提升运营效率，以用户体验思维优化产品功能。</p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">&#9993; 联系我</a>
+                <a href="#videos" class="btn btn-outline">&#9654; 视频作品</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="hero-card-avatar">&#9733;</div>
+                <h3>Kelly Jin</h3>
+                <p>全栈开发 &middot; 新媒体运营</p>
+                <div class="hero-card-info">
+                    <div class="hero-card-item"><div class="hero-card-icon">&#128205;</div><span>内蒙古呼和浩特</span></div>
+                    <div class="hero-card-item"><div class="hero-card-icon">&#127891;</div><span>武汉商学院 &middot; 软件工程</span></div>
+                    <div class="hero-card-item"><div class="hero-card-icon">&#128188;</div><span>2年+ 工作经验</span></div>
+                    <div class="hero-card-item"><div class="hero-card-icon">&#9993;</div><span>kelly_jin@qq.com</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="about" id="about">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">About Me</div><h2 class="section-title">关于我</h2><p class="section-desc">一个热爱技术与创造，渴望通过有意义的工作带来积极改变的人</p></div>
+        <div class="about-grid">
+            <div class="about-text fade-in">
+                <h3>个人画像</h3>
+                <p>我是金鑫，土生土长的呼和浩特人，毕业于呼和浩特市第一中学。ENFP（竞选者型）人格，具备出色的人际沟通能力、强大创造力和对新可能性的敏锐洞察。</p>
+                <p>2023年毕业于武汉商学院软件工程专业，获工学学士学位。在校期间成绩优异，荣获院长奖学金及优秀毕业生称号，担任班委成员，锻炼了组织协调与团队协作能力。</p>
+                <p>毕业后参加西部计划消防专项，在内蒙古消防救援系统多岗位历练两年，从审计室到指挥中心，再到全媒体中心，积累了丰富的基层工作经验和新媒体运营实战能力。</p>
+            </div>
+            <div class="about-highlights fade-in">
+                <div class="highlight-card"><div class="highlight-icon">&#128187;</div><h4>全栈开发</h4><p>掌握前后端开发技术，具备独立完成项目的能力</p></div>
+                <div class="highlight-card"><div class="highlight-icon">&#127909;</div><h4>新媒体运营</h4><p>一年以上官方新媒体运营经验，短视频、直播全流程</p></div>
+                <div class="highlight-card"><div class="highlight-icon">&#128293;</div><h4>消防系统历练</h4><p>西部计划消防专项两年，多岗位轮值，基层经验丰富</p></div>
+                <div class="highlight-card"><div class="highlight-icon">&#129309;</div><h4>沟通协作</h4><p>ENFP人格驱动，擅长跨部门协作与团队激励</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="skills" id="skills">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Skills</div><h2 class="section-title">技术能力</h2><p class="section-desc">全栈开发技能与工具链掌握，持续拓展技术视野</p></div>
+        <div class="skills-grid">
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#127760;</div><h3>前端开发</h3></div><p>熟练掌握前端技术栈，能够独立完成网页界面设计与交互实现</p><div class="skill-tags"><span class="skill-tag">HTML</span><span class="skill-tag">CSS</span><span class="skill-tag">JavaScript</span><span class="skill-tag">jQuery</span></div></div>
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#9881;</div><h3>后端与数据库</h3></div><p>熟悉后端开发与数据库技术，具备数据建模与查询优化能力</p><div class="skill-tags"><span class="skill-tag">Java</span><span class="skill-tag">Python</span><span class="skill-tag">MySQL</span><span class="skill-tag">MongoDB</span></div></div>
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#128295;</div><h3>开发工具</h3></div><p>熟练使用主流IDE，具备良好的编程规范与代码管理习惯</p><div class="skill-tags"><span class="skill-tag">Eclipse</span><span class="skill-tag">IDEA</span><span class="skill-tag">PyCharm</span><span class="skill-tag">Git</span></div></div>
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#128640;</div><h3>编程语言</h3></div><p>系统学习多种编程语言，具备扎实的计算机科学基础</p><div class="skill-tags"><span class="skill-tag">C/C++</span><span class="skill-tag">Java</span><span class="skill-tag">C#</span><span class="skill-tag">Python</span></div></div>
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#128241;</div><h3>拓展技术</h3></div><p>关注前沿技术趋势，持续拓展技术视野与能力边界</p><div class="skill-tags"><span class="skill-tag">大数据开发</span><span class="skill-tag">鸿蒙NEXT</span><span class="skill-tag">AI应用</span></div></div>
+            <div class="skill-card fade-in"><div class="skill-card-header"><div class="skill-card-icon">&#127916;</div><h3>内容创作</h3></div><p>具备全流程内容生产能力，从策划到发布一站式完成</p><div class="skill-tags"><span class="skill-tag">短视频策划</span><span class="skill-tag">直播技术</span><span class="skill-tag">图文编辑</span><span class="skill-tag">拍摄剪辑</span></div></div>
+        </div>
+    </div>
+</section>
+<section class="experience" id="experience">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Experience</div><h2 class="section-title">工作经历</h2><p class="section-desc">从企业实习到西部计划，在实践中不断成长</p></div>
+        <div class="timeline">
+            <div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-date">2024.08 - 2025.08</div><h3>全媒体运营及技术保障</h3><h4>赛罕区消防救援大队 &middot; 全媒体中心</h4><p>负责直播全流程全平台技术保障，短视频策划运营等。独立完成直播设备调试、信号传输、平台推流、现场调度等专业环节。熟悉各平台算法逻辑与用户偏好，持续优化运营策略。</p></div>
+            <div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-date">2024.04 - 2024.08</div><h3>新媒体编辑</h3><h4>赛罕区消防救援大队 &middot; 全媒体中心</h4><p>负责拍摄宣传片，策划活动，图文摄像等工作。具备选题策划、脚本撰写、拍摄剪辑到平台发布的全流程内容生产能力。</p></div>
+            <div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-date">2023.10 - 2024.03</div><h3>指挥中心调度运维</h3><h4>内蒙古消防救援总队 &middot; 指挥中心</h4><p>协助调度救援，平时运行维护多个系统。积累应急协调与系统运维经验，熟悉消防指挥调度流程。</p></div>
+            <div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-date">2023.08 - 2023.10</div><h3>审计室文职 &amp; 志愿服务队</h3><h4>内蒙古消防救援总队 &middot; 审计室</h4><p>兼北疆蓝焰志愿服务队，协助组织志愿活动及消防文职人员工作。参与西部计划消防专项，开启消防系统多岗位历练。</p></div>
+            <div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-date">2022 - 2023</div><h3>Java软件开发实习生</h3><h4>软帝股份有限公司 &middot; 武汉光谷金融港</h4><p>大四期间完成Java软件开发实习，参与企业级项目开发，熟悉敏捷开发模式与团队协作规范。将Java编程、数据库操作、WEB开发等技术应用于实际业务场景。</p></div>
+        </div>
+    </div>
+</section>
+<section class="education" id="education">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Education</div><h2 class="section-title">教育背景</h2><p class="section-desc">软件工程专业的系统能力构建</p></div>
+        <div class="edu-grid">
+            <div class="edu-card fade-in"><h3>软件工程</h3><div class="edu-school">武汉商学院</div><div class="edu-date">2018.09 - 2023.06 &middot; 本科 &middot; 工学学士</div><p>系统学习C/C++、Java、C#、Python等编程语言，掌握WEB开发、计算机网络、MySQL数据库、软件工程、人工智能与机器学习、Linux操作系统等核心课程。</p><div class="edu-honors"><span class="edu-honor">院长奖学金</span><span class="edu-honor">优秀毕业生</span><span class="edu-honor">副班长</span></div></div>
+            <div class="edu-card fade-in"><h3>毕业设计项目</h3><div class="edu-school">基于Pyecharts + MongoDB的疫情数据监测可视化系统</div><div class="edu-date">2023 &middot; 本科毕业设计</div><p>体现数据可视化与后端开发的整合能力，展现全栈开发思维。运用Python数据可视化库与NoSQL数据库，构建实时数据监测平台。</p><div class="edu-honors"><span class="edu-honor">Pyecharts</span><span class="edu-honor">MongoDB</span><span class="edu-honor">数据可视化</span></div></div>
+        </div>
+    </div>
+</section>
+<section class="values" id="values">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Values</div><h2 class="section-title">价值主张</h2><p class="section-desc">技术思维与内容创作的跨界整合</p></div>
+        <div class="values-grid">
+            <div class="value-card fade-in"><div class="value-card-icon">&#128170;</div><h3>技术实现能力</h3><p>具备扎实的编程基础与系统运维能力，能够独立完成网站开发、数据处理、系统维护等技术工作。</p></div>
+            <div class="value-card fade-in"><div class="value-card-icon">&#128240;</div><h3>内容运营经验</h3><p>拥有官方新媒体平台运营经验，熟悉短视频、直播、图文等多种内容形态的策划与执行。</p></div>
+            <div class="value-card fade-in"><div class="value-card-icon">&#128279;</div><h3>跨界整合优势</h3><p>善于运用数据分析指导内容决策，利用技术工具提升运营效率，以用户体验思维优化产品功能。</p></div>
+        </div>
+    </div>
+</section>
+<section class="videos" id="videos">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Portfolio</div><h2 class="section-title">视频作品</h2><p class="section-desc">用镜头记录故事，用技术呈现创意</p></div>
+        <div class="video-grid" id="videoGrid"><div class="loading-spinner" id="videoLoading"></div></div>
+    </div>
+</section>
+<div class="video-modal" id="videoModal">
+    <div class="video-modal-inner">
+        <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+        <div class="video-modal-player" id="videoPlayer"></div>
+        <div class="video-modal-title" id="videoModalTitle"></div>
+    </div>
+</div>
+<section class="guestbook" id="guestbook">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Guestbook</div><h2 class="section-title">留言板</h2><p class="section-desc">欢迎留下你的想法，我会认真阅读并回复每一条留言</p></div>
+        <div class="guestbook-container fade-in">
+            <p class="guestbook-hint">&#128172; 留下你的想法吧，管理员回复后会显示在留言下方</p>
+            <div class="gb-form" id="gbForm">
+                <div class="gb-form-row">
+                    <input type="text" id="gbNick" placeholder="你的昵称 *" maxlength="30">
+                    <input type="email" id="gbEmail" placeholder="邮箱（选填，回复时通知你）">
+                </div>
+                <textarea id="gbContent" placeholder="写下你的留言..." maxlength="1000"></textarea>
+                <div class="gb-form-actions"><button class="gb-btn gb-btn-primary" id="gbSubmit" onclick="submitMessage()">发表留言</button></div>
+            </div>
+            <div id="gbList"><div class="gb-loading"></div></div>
+        </div>
+    </div>
+</section>
+<section class="contact" id="contact">
+    <div class="section-inner">
+        <div class="section-header fade-in"><div class="section-tag">Contact</div><h2 class="section-title">联系我</h2><p class="section-desc">期待与您交流，共同创造价值</p></div>
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <h3>期待您的联系</h3>
+                <p>如果您对我的经历和能力感兴趣，或者有合适的岗位机会，欢迎随时联系我。我期待加入重视创新、鼓励成长、氛围友好的团队，与志同道合的伙伴共同实现职业理想。</p>
+                <div class="contact-list">
+                    <div class="contact-item"><div class="contact-item-icon">&#9993;</div><div class="contact-item-text"><div class="label">电子邮箱</div><div class="value">kelly_jin@qq.com</div></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">&#128205;</div><div class="contact-item-text"><div class="label">现居地</div><div class="value">内蒙古呼和浩特</div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer><p>&copy; 2026 金鑫 (Kelly Jin) &middot; 技术赋能者的多维成长之路</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://quclkzudnrpexvghvost.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable__02J7BerUfZNv0F-xdRRPA_eedXIUka';
+let supabase = null;
+function initSupabase() {
+    if (SUPABASE_URL === 'YOUR_SUPABASE_URL') return false;
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+}
+function parseVideoUrl(url) {
+    if (!url) return { type: 'unknown', id: '' };
+    let m = url.match(/bilibili\.com\/video\/(BV[\w]+)/i);
+    if (m) return { type: 'bilibili', id: m[1] };
+    m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+    if (m) return { type: 'youtube', id: m[1] };
+    if (url.match(/\.(mp4|webm|ogg)(\?|$)/i)) return { type: 'direct', id: url };
+    return { type: 'embed', id: url };
+}
+function getVideoEmbed(parsed) {
+    switch (parsed.type) {
+        case 'bilibili': return 'https://player.bilibili.com/player.html?bvid=' + parsed.id + '&autoplay=0';
+        case 'youtube': return 'https://www.youtube.com/embed/' + parsed.id + '?autoplay=0';
+        case 'direct': return null;
+        case 'embed': return parsed.id;
+        default: return null;
+    }
+}
+function getVideoThumb(video) {
+    if (video.cover) return video.cover;
+    var parsed = parseVideoUrl(video.url);
+    if (parsed.type === 'youtube') return 'https://img.youtube.com/vi/' + parsed.id + '/hqdefault.jpg';
+    return '';
+}
+function renderVideoCard(video) {
+    var thumb = getVideoThumb(video);
+    var dateStr = video.created_at ? new Date(video.created_at).toLocaleDateString('zh-CN') : '';
+    return '<div class="video-card fade-in" onclick="playVideo(\'' + video.id + '\')">' +
+        '<div class="video-thumb">' +
+        (thumb ? '<img src="' + thumb + '" alt="' + video.title + '" loading="lazy">' : '') +
+        '<div class="video-play-btn"></div>' +
+        (video.duration ? '<div class="video-duration">' + video.duration + '</div>' : '') +
+        '</div>' +
+        '<div class="video-info">' +
+        '<h3>' + video.title + '</h3>' +
+        '<p>' + (video.description || '') + '</p>' +
+        '<div class="video-meta">' +
+        (video.category ? '<span class="video-category">' + video.category + '</span>' : '') +
+        (dateStr ? '<span>' + dateStr + '</span>' : '') +
+        '</div></div></div>';
+}
+async function loadVideos() {
+    var grid = document.getElementById('videoGrid');
+    var loading = document.getElementById('videoLoading');
+    if (!initSupabase()) {
+        loading.outerHTML = '<div class="video-empty"><div class="video-empty-icon">&#127916;</div><p>视频功能即将上线，敬请期待</p></div>';
+        return;
+    }
+    try {
+        var result = await supabase.from('videos').select('*').order('created_at', { ascending: false });
+        loading.remove();
+        if (result.error) throw result.error;
+        if (!result.data || result.data.length === 0) {
+            grid.innerHTML = '<div class="video-empty"><div class="video-empty-icon">&#127916;</div><p>暂无视频作品，敬请期待</p></div>';
+            return;
+        }
+        grid.innerHTML = result.data.map(function(v) { return renderVideoCard(v); }).join('');
+        grid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+    } catch (err) {
+        console.error(err);
+        loading.outerHTML = '<div class="video-empty"><div class="video-empty-icon">&#9888;&#65039;</div><p>视频加载失败，请稍后再试</p></div>';
+    }
+}
+async function playVideo(id) {
+    if (!supabase) return;
+    var result = await supabase.from('videos').select('*').eq('id', id).single();
+    var video = result.data;
+    if (!video) return;
+    var parsed = parseVideoUrl(video.url);
+    var player = document.getElementById('videoPlayer');
+    document.getElementById('videoModalTitle').textContent = video.title;
+    if (parsed.type === 'direct') {
+        player.innerHTML = '<video src="' + video.url + '" controls autoplay></video>';
+    } else {
+        var embedUrl = getVideoEmbed(parsed);
+        if (embedUrl) player.innerHTML = '<iframe src="' + embedUrl + '" allowfullscreen allow="autoplay; encrypted-media"></iframe>';
+    }
+    document.getElementById('videoModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeVideoModal() {
+    document.getElementById('videoModal').classList.remove('active');
+    document.getElementById('videoPlayer').innerHTML = '';
+    document.body.style.overflow = '';
+}
+document.getElementById('videoModal').addEventListener('click', function(e) { if (e.target === this) closeVideoModal(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeVideoModal(); });
+async function loadMessages() {
+    var list = document.getElementById('gbList');
+    if (!initSupabase()) {
+        list.innerHTML = '<div class="gb-empty">留言功能即将上线</div>';
+        return;
+    }
+    try {
+        var result = await supabase.from('guestbook').select('*').order('created_at', { ascending: false });
+        if (result.error) throw result.error;
+        if (!result.data || result.data.length === 0) {
+            list.innerHTML = '<div class="gb-empty">还没有留言，来做第一个留言的人吧！</div>';
+            return;
+        }
+        list.innerHTML = '<div class="gb-list">' + result.data.map(function(msg) {
+            var initial = (msg.nick || '?')[0].toUpperCase();
+            var time = new Date(msg.created_at).toLocaleString('zh-CN');
+            var replyHtml = '';
+            if (msg.reply) {
+                replyHtml = '<div class="gb-reply"><div class="gb-reply-label">&#128172; 站长回复</div><div class="gb-content">' + escapeHtml(msg.reply) + '</div></div>';
+            }
+            return '<div class="gb-item"><div class="gb-item-header"><div class="gb-avatar">' + initial + '</div><span class="gb-name">' + escapeHtml(msg.nick || '匿名') + '</span><span class="gb-time">' + time + '</span></div><div class="gb-content">' + escapeHtml(msg.content) + '</div>' + replyHtml + '</div>';
+        }).join('') + '</div>';
+    } catch (err) {
+        console.error(err);
+        list.innerHTML = '<div class="gb-empty">留言加载失败</div>';
+    }
+}
+async function submitMessage() {
+    var nick = document.getElementById('gbNick').value.trim();
+    var email = document.getElementById('gbEmail').value.trim();
+    var content = document.getElementById('gbContent').value.trim();
+    var btn = document.getElementById('gbSubmit');
+    if (!nick) { alert('请填写昵称'); return; }
+    if (!content) { alert('请填写留言内容'); return; }
+    btn.disabled = true;
+    btn.textContent = '发送中...';
+    try {
+        var result = await supabase.from('guestbook').insert({ nick: nick, email: email || null, content: content });
+        if (result.error) throw result.error;
+        document.getElementById('gbNick').value = '';
+        document.getElementById('gbEmail').value = '';
+        document.getElementById('gbContent').value = '';
+        loadMessages();
+    } catch (err) {
+        alert('发送失败: ' + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '发表留言';
+    }
+}
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+var navbar = document.getElementById('navbar');
+window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 20); });
+var navToggle = document.getElementById('navToggle');
+var navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', function() { navLinks.classList.toggle('open'); });
+function closeNav() { navLinks.classList.remove('open'); }
+var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+loadVideos();
+loadMessages();
+</script>
+</body>
+</html>
